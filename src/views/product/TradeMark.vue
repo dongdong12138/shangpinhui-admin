@@ -4,10 +4,12 @@
     <el-button type="primary" icon="el-icon-plus" class="btn-add">添加</el-button>
 
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="no" label="序号" width="80" align="center" />
-      <el-table-column prop="name" label="品牌名称" />
+      <el-table-column type="index" label="序号" width="80" align="center" />
+      <el-table-column prop="tmName" label="品牌名称" />
       <el-table-column label="品牌LOGO">
-        <img src="" alt="logo">
+        <template slot-scope="scope">
+          <img :src="scope.row.logoUrl" alt="logo" style="height: 50px">
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -21,11 +23,11 @@
 
     <el-pagination
       class="pagination"
-      :current-page="5"
-      :page-sizes="[10, 20, 30, 40, 50]"
-      :page-size="10"
+      :current-page="page"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="limit"
       layout="prev, pager, next, jumper, ->, sizes, total"
-      :total="400"
+      :total="total"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
@@ -43,8 +45,14 @@ export default {
         { no: '2', name: '苹果', address: '上海市普陀区金沙江路 1517 弄' },
         { no: '3', name: '华为', address: '上海市普陀区金沙江路 1519 弄' },
         { no: '4', name: '三星', address: '上海市普陀区金沙江路 1516 弄' }
-      ]
+      ],
+      page: 1,
+      limit: 5,
+      total: 0
     }
+  },
+  mounted() {
+    this.getTradeMarkList()
   },
   methods: {
     handleEdit(index, row) {
@@ -56,9 +64,26 @@ export default {
 
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.limit = val
+      this.getTradeMarkList()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.page = val
+      this.getTradeMarkList()
+    },
+
+    getTradeMarkList() {
+      const { page, limit } = this
+      try {
+        this.$API.tradeMark.reqTradeMarkList(page, limit).then(res => {
+          console.log('getTradeMarkList:', res)
+          this.tableData = res.data.records
+          this.total = res.data.total
+        })
+      } catch (err) {
+        console.log('getTradeMarkList err:', err)
+      }
     }
   }
 }
@@ -66,6 +91,7 @@ export default {
 
 <style scoped lang="scss">
 .btn-add { margin: 10px 0; }
+
 .pagination {
   margin-top: 20px;
   text-align: center;
