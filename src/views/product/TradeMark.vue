@@ -33,11 +33,11 @@
     />
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="tradeMarkForm" style="width: 80%">
-        <el-form-item label="品牌名称" :label-width="formLabelWidth">
+      <el-form ref="tradeMarkForm" :rules="rules" :model="tradeMarkForm" style="width: 80%">
+        <el-form-item prop="tmName" label="品牌名称" :label-width="formLabelWidth">
           <el-input v-model="tradeMarkForm.tmName" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="品牌LOGO" :label-width="formLabelWidth">
+        <el-form-item prop="logoUrl" label="品牌LOGO" :label-width="formLabelWidth">
           <el-upload
             class="avatar-uploader"
             action="/dev-api2/admin/product/fileUpload"
@@ -74,10 +74,15 @@ export default {
       dialogFormVisible: false,
       dialogTitle: '',
       formLabelWidth: '100px',
-      tradeMarkForm: {
-        id: '',
-        tmName: '',
-        logoUrl: ''
+      tradeMarkForm: { id: '', tmName: '', logoUrl: '' },
+      rules: {
+        tmName: [
+          { required: true, message: '请输入品牌名称', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'change' }
+        ],
+        logoUrl: [
+          { required: true, message: '请选择品牌LOGO' }
+        ]
       }
     }
   },
@@ -94,19 +99,22 @@ export default {
       Object.assign(this.tradeMarkForm, { id: '', tmName: '', logoUrl: '' })
     },
     confirmDialog() {
-      try {
-        this.$API.tradeMark.reqAddorUpdateTradeMark(this.tradeMarkForm).then(res => {
-          console.log('reqAddorUpdateTradeMark:', res)
-          if (res.code === 200) {
-            this.getTradeMarkList()
-            const message = this.tradeMarkForm.id ? '修改品牌成功' : '添加品牌成功'
-            this.$message.success(message)
-            this.closeDialog()
-          }
-        })
-      } catch (err) {
-        console.log('reqAddorUpdateTradeMark err:', err)
-      }
+      this.$refs.tradeMarkForm.validate((valid) => {
+        if (!valid) return
+        try {
+          this.$API.tradeMark.reqAddorUpdateTradeMark(this.tradeMarkForm).then(res => {
+            console.log('reqAddorUpdateTradeMark:', res)
+            if (res.code === 200) {
+              this.getTradeMarkList()
+              const message = this.tradeMarkForm.id ? '修改品牌成功' : '添加品牌成功'
+              this.$message.success(message)
+              this.closeDialog()
+            }
+          })
+        } catch (err) {
+          console.log('reqAddorUpdateTradeMark err:', err)
+        }
+      })
     },
 
     handleEdit(index, row) {
