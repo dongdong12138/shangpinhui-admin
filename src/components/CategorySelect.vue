@@ -21,12 +21,30 @@
       </el-form>
     </el-card>
 
+    <el-card>
+      <el-button type="primary" icon="el-icon-plus" class="btn-add">添加属性</el-button>
+      <el-table :data="attrInfoList" border style="width: 100%">
+        <el-table-column type="index" label="序号" width="80" align="center" />
+        <el-table-column prop="attrName" label="属性名称" width="150" />
+        <el-table-column label="属性值列表">
+          <template slot-scope="{ row }">
+            <el-tag v-for="attrValue in row.attrValueList" :key="attrValue.id" type="success" style="margin: 0 10px">{{ attrValue.valueName }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="150">
+          <el-button size="mini" type="warning" icon="el-icon-edit" />
+          <el-button size="mini" type="danger" icon="el-icon-delete" />
+        </el-table-column>
+      </el-table>
+    </el-card>
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'CategorySelect',
+  props: ['attrInfoList'],
   data() {
     return {
       category1List: [],

@@ -25,3 +25,14 @@ export function reqCategory2(category1Id) {
 export function reqCategory3(category2Id) {
   return request({ url: `/dev-api2/admin/product/getCategory3/${category2Id}`, method: 'get' })
 }
+
+/**
+ * 查询商品属性信息
+ * @param category1Id 一级分类 id
+ * @param category2Id 二级分类 id
+ * @param category3Id 三级分类 id
+ * @returns {Promise}
+ */
+export function reqAttrInfoList(category1Id, category2Id, category3Id) {
+  return request({ url: `/dev-api2/admin/product/attrInfoList/${category1Id}/${category2Id}/${category3Id}`, method: 'get' })
+}
