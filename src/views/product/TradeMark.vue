@@ -33,20 +33,20 @@
     />
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form style="width: 80%">
+      <el-form :model="tradeMarkForm" style="width: 80%">
         <el-form-item label="品牌名称" :label-width="formLabelWidth">
-          <el-input v-model="brandName" autocomplete="off" />
+          <el-input v-model="tradeMarkForm.tmName" autocomplete="off" />
         </el-form-item>
         <el-form-item label="品牌LOGO" :label-width="formLabelWidth">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/dev-api2/admin/product/fileUpload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
             <div class="el-upload">
-              <img v-if="logoUrl" :src="logoUrl" class="avatar" alt="logo">
+              <img v-if="tradeMarkForm.logoUrl" :src="tradeMarkForm.logoUrl" class="avatar" alt="logo">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </div>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -54,8 +54,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button type="primary" @click="confirmDialog">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -73,9 +73,12 @@ export default {
       total: 0,
       dialogFormVisible: false,
       dialogTitle: '',
-      brandName: '',
       formLabelWidth: '100px',
-      logoUrl: ''
+      tradeMarkForm: {
+        id: '',
+        tmName: '',
+        logoUrl: ''
+      }
     }
   },
   mounted() {
@@ -86,9 +89,28 @@ export default {
       this.dialogTitle = title
       this.dialogFormVisible = true
     },
+    closeDialog() {
+      this.dialogFormVisible = false
+      Object.assign(this.tradeMarkForm, { id: '', tmName: '', logoUrl: '' })
+    },
+    confirmDialog() {
+      try {
+        this.$API.tradeMark.reqAddorUpdateTradeMark(this.tradeMarkForm).then(res => {
+          console.log('reqAddorUpdateTradeMark:', res)
+          if (res.code === 200) {
+            this.getTradeMarkList()
+            const message = this.tradeMarkForm.id ? '修改品牌成功' : '添加品牌成功'
+            this.$message.success(message)
+            this.closeDialog()
+          }
+        })
+      } catch (err) {
+        console.log('reqAddorUpdateTradeMark err:', err)
+      }
+    },
 
     handleEdit(index, row) {
-      console.log(index, row)
+      Object.assign(this.tradeMarkForm, row)
       this.showDialog()
     },
     handleDelete(index, row) {
@@ -104,20 +126,19 @@ export default {
       this.getTradeMarkList()
     },
 
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+    handleAvatarSuccess(res) {
+      this.tradeMarkForm.logoUrl = res.data
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
+      const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+      if (!isJPGorPNG) {
+        this.$message.error('上传 LOGO 图片只能是 JPG 或 PNG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$message.error('上传 LOGO 图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M
+      return isJPGorPNG && isLt2M
     },
 
     getTradeMarkList() {
