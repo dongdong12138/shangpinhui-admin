@@ -22,3 +22,12 @@ export function reqAddorUpdateTradeMark(tradeMark) {
     return request({ url: `/dev-api2/admin/product/baseTrademark/save`, method: 'post', data: tradeMark })
   }
 }
+
+/**
+ * 删除品牌
+ * @param id 品牌 id
+ * @returns {Promise}
+ */
+export function reqDeleteTradeMark(id) {
+  return request({ url: `/dev-api2/admin/product/baseTrademark/remove/${id}`, method: 'delete' })
+}

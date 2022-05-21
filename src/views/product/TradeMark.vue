@@ -122,7 +122,28 @@ export default {
       this.showDialog()
     },
     handleDelete(index, row) {
-      console.log(index, row)
+      this.$confirm(`是否删除${row.tmName}品牌?`, '提示', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      }).then(() => {
+        try {
+          this.$API.tradeMark.reqDeleteTradeMark(row.id).then(result => {
+            // console.log('reqDeleteTradeMark:', result)
+            if (result.code === 200) {
+              this.getTradeMarkList()
+              this.$message.success('删除成功')
+            }
+          })
+        } catch (err) {
+          console.log('reqDeleteTradeMark err:', err)
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
 
     handleSizeChange(val) {
@@ -153,9 +174,13 @@ export default {
       const { page, limit } = this
       try {
         this.$API.tradeMark.reqTradeMarkList(page, limit).then(res => {
-          console.log('getTradeMarkList:', res)
+          // console.log('getTradeMarkList:', res)
           this.tableData = res.data.records
           this.total = res.data.total
+          if (!this.tableData.length) {
+            this.page -= 1
+            this.getTradeMarkList()
+          }
         })
       } catch (err) {
         console.log('getTradeMarkList err:', err)
