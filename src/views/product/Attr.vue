@@ -1,12 +1,17 @@
 <template>
   <div>
-    <CategorySelect />
+    <CategorySelect @getCategoryId="getCategoryId" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Attr'
+  name: 'Attr',
+  methods: {
+    getCategoryId(ids) {
+      console.log('ids:', ids)
+    }
+  }
 }
 </script>
 

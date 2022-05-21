@@ -42,14 +42,17 @@ export default {
   watch: {
     'categoryForm.category1'(newValue) {
       this.categoryForm.category2 = ''
+      this.category2List = []
+      this.category3List = []
       newValue && this.getCategory2(newValue)
     },
     'categoryForm.category2'(newValue) {
       this.categoryForm.category3 = ''
+      this.category3List = []
       newValue && this.getCategory3(newValue)
     },
     'categoryForm.category3'(newValue) {
-      newValue && console.log('1111111111')
+      newValue && this.$emit('getCategoryId', this.categoryForm)
     }
   },
   mounted() {
