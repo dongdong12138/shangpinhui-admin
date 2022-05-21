@@ -12,6 +12,10 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+// 全局组件
+import CategorySelect from '@/components/CategorySelect'
+Vue.component(CategorySelect.name, CategorySelect)
+
 import '@/icons' // icon
 import '@/permission' // permission control
 

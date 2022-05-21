@@ -1,5 +1,7 @@
 <template>
-  <div>Attr</div>
+  <div>
+    <CategorySelect />
+  </div>
 </template>
 
 <script>
@@ -9,5 +11,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
