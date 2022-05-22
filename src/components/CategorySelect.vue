@@ -41,18 +41,22 @@
       </div>
 
       <div v-show="!isTable">
-        <el-form :inline="true" class="demo-form-inline">
+        <el-form :model="attrInfo" :inline="true" class="demo-form-inline">
           <el-form-item label="属性名">
-            <el-input placeholder="请输入属性名" />
+            <el-input v-model="attrInfo.attrName" placeholder="请输入属性名" />
           </el-form-item>
         </el-form>
         <el-row>
-          <el-button type="primary" icon="el-icon-plus">添加属性值</el-button>
+          <el-button :disabled="!attrInfo.attrName" type="primary" icon="el-icon-plus" @click="addAttrValue">添加属性值</el-button>
           <el-button @click="isTable = true">取消</el-button>
         </el-row>
-        <el-table border style="width: 100%; margin: 20px 0">
+        <el-table :data="attrInfo.attrValueList" border style="width: 100%; margin: 20px 0">
           <el-table-column type="index" label="序号" width="80" align="center" />
-          <el-table-column prop="attrName" label="属性值名称" />
+          <el-table-column prop="attrName" label="属性值名称">
+            <template slot-scope="{ row }">
+              <el-input v-model="row.valueName" size="mini" placeholder="请输入属性值名称" />
+            </template>
+          </el-table-column>
           <el-table-column label="操作">
             <el-button size="mini" type="warning" icon="el-icon-edit" @click="isTable = false" />
             <el-button size="mini" type="danger" icon="el-icon-delete" />
@@ -79,10 +83,14 @@ export default {
       category1List: [],
       category2List: [],
       category3List: [],
-      categoryForm: {
-        category1: '',
-        category2: '',
-        category3: ''
+      categoryForm: { category1: '', category2: '', category3: '' },
+      attrInfo: {
+        'attrName': '',
+        'attrValueList': [
+          // { 'attrId': 0, 'valueName': '' }
+        ],
+        'categoryId': 0,
+        'categoryLevel': 0
       }
     }
   },
@@ -106,6 +114,10 @@ export default {
     this.getCategory1()
   },
   methods: {
+    addAttrValue() {
+      this.attrInfo.attrValueList.push({ 'attrId': undefined, 'valueName': '' })
+    },
+
     getCategory1() {
       try {
         this.$API.attr.reqCategory1().then(result => {

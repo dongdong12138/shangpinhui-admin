@@ -36,3 +36,12 @@ export function reqCategory3(category2Id) {
 export function reqAttrInfoList(category1Id, category2Id, category3Id) {
   return request({ url: `/dev-api2/admin/product/attrInfoList/${category1Id}/${category2Id}/${category3Id}`, method: 'get' })
 }
+
+/**
+ * 保存商品属性信息
+ * @param attrInfo 属性信息
+ * @returns {Promise}
+ */
+export function reqSaveAttrInfo(attrInfo) {
+  return request({ url: `/dev-api2/admin/product/saveAttrInfo`, method: 'post', data: attrInfo })
+}
