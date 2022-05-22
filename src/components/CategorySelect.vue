@@ -57,7 +57,7 @@
           <el-table-column prop="attrName" label="属性值名称">
             <template slot-scope="{ row }">
               <el-input v-show="row.flag" v-model="row.valueName" size="mini" placeholder="请输入属性值名称" @blur="toggleLookAdnEdit(row)" @keyup.native.enter="toggleLookAdnEdit(row)" />
-              <div v-show="!row.flag" style="height: 1em" @click="row.flag = true">{{ row.valueName }}</div>
+              <span v-show="!row.flag" style="display: block" @click="row.flag = true">{{ row.valueName }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -81,6 +81,7 @@ import { cloneDeep } from 'lodash'
 
 export default {
   name: 'CategorySelect',
+  // eslint-disable-next-line vue/require-prop-types
   props: ['attrInfoList'],
   data() {
     return {
@@ -120,11 +121,19 @@ export default {
   },
   methods: {
     toggleLookAdnEdit(row) {
-      // this.attrInfo.attrValueList.forEach(item => {
-      //   if (item.attrName) {
-      //     item.flag = false
-      //   }
-      // })
+      console.log(row)
+      if (!row.valueName.trim()) {
+        this.$message.warning('属性值不可以为空')
+        return
+      }
+      const isRepeat = this.attrInfo.attrValueList.some(item => {
+        if (row !== item) return item.valueName === row.valueName
+      })
+      if (isRepeat) {
+        row.valueName = ''
+        this.$message.warning('该属性值已存在')
+        return
+      }
       row.flag = false
     },
 
