@@ -56,7 +56,8 @@
           <el-table-column type="index" label="序号" width="80" align="center" />
           <el-table-column prop="attrName" label="属性值名称">
             <template slot-scope="{ row }">
-              <el-input v-model="row.valueName" size="mini" placeholder="请输入属性值名称" />
+              <el-input v-show="row.flag" v-model="row.valueName" size="mini" placeholder="请输入属性值名称" @blur="toggleLookAdnEdit(row)" @keyup.native.enter="toggleLookAdnEdit(row)" />
+              <div v-show="!row.flag" style="height: 1em" @click="row.flag = true">{{ row.valueName }}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -118,6 +119,15 @@ export default {
     this.getCategory1()
   },
   methods: {
+    toggleLookAdnEdit(row) {
+      // this.attrInfo.attrValueList.forEach(item => {
+      //   if (item.attrName) {
+      //     item.flag = false
+      //   }
+      // })
+      row.flag = false
+    },
+
     saveAddAttr() {
       const { category3 } = this.categoryForm
       console.log('category3:', category3)
@@ -129,7 +139,7 @@ export default {
     },
 
     addAttrValue() {
-      this.attrInfo.attrValueList.push({ 'attrId': undefined, 'valueName': '' })
+      this.attrInfo.attrValueList.push({ 'attrId': this.attrInfo.id, 'valueName': '', flag: true })
     },
 
     editAttr(row) {
