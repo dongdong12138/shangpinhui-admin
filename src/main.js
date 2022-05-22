@@ -14,7 +14,9 @@ import router from './router'
 
 // 全局组件
 import CategorySelect from '@/components/CategorySelect'
+import HintButton from '@/components/HintButton'
 Vue.component(CategorySelect.name, CategorySelect)
+Vue.component(HintButton.name, HintButton)
 
 import '@/icons' // icon
 import '@/permission' // permission control

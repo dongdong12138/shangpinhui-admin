@@ -10,24 +10,24 @@
       <!--spu 列表-->
       <div>
         <el-button type="primary" icon="el-icon-plus">添加SPU</el-button>
-        <el-table border style="width: 100%">
+        <el-table :data="spuList" border style="width: 100%">
           <el-table-column type="index" label="序号" width="80" align="center" />
-          <el-table-column prop="attrName" label="spu名称" />
-          <el-table-column prop="attrName" label="spu描述" />
+          <el-table-column prop="spuName" label="spu名称" />
+          <el-table-column prop="description" label="spu描述" />
           <el-table-column label="操作">
             <template v-slot="{ row, $index }">
-              <el-button type="success" icon="el-icon-plus" size="mini" />
-              <el-button type="warning" icon="el-icon-edit" size="mini" />
-              <el-button type="info" icon="el-icon-info" size="mini" />
-              <el-button type="danger" icon="el-icon-delete" size="mini" />
+              <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" />
+              <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" />
+              <HintButton title="查看当前spu全部sku列表" type="info" icon="el-icon-info" size="mini" />
+              <HintButton title="删除spu" type="danger" icon="el-icon-delete" size="mini" />
             </template>
           </el-table-column>
         </el-table>
         <el-pagination
-          :total="100"
-          :current-page="1"
+          :total="total"
+          :current-page="page"
           :page-sizes="[5, 10, 15, 20]"
-          :page-size="5"
+          :page-size="limit"
           layout="prev, pager, next, jumper, ->, sizes, total"
           style="text-align: center; margin-top: 10px"
           @size-change="handleSizeChange"
@@ -45,27 +45,56 @@ export default {
   name: 'Spu',
   data() {
     return {
-      categoryForm: { category1: '', category2: '', category3: '' }
+      categoryForm: { category1: '', category2: '', category3: '' },
+      page: 1,
+      limit: 5,
+      total: 0,
+      spuList: []
     }
   },
   methods: {
     getCategoryForm(form) {
       this.categoryForm = form
-      const { category1, category2, category3 } = form
-      this.getAttrInfoList(category1, category2, category3)
+      this.getSpuList()
     },
-    getAttrInfoList(category1Id, category2Id, category3Id) {
-      console.log(category1Id, category2Id, category3Id)
-      // try {
-      //   this.$API.attr.reqAttrInfoList(category1Id, category2Id, category3Id).then(result => {
-      //     console.log('reqAttrInfoList:', result)
-      //     if (result.code === 200) {
-      //       this.attrInfoList = result.data
-      //     }
-      //   })
-      // } catch (err) {
-      //   console.log('reqAttrInfoList:', err)
-      // }
+
+    /**
+     * 每页显示条数变化
+     * @param val 显示条数
+     */
+    handleSizeChange(val) {
+      console.log('每页显示条数变化:', val)
+      this.limit = val
+      this.page = 1
+      this.getSpuList()
+    },
+
+    /**
+     * 当前页码变化
+     * @param val 当前页码
+     */
+    handleCurrentChange(val) {
+      console.log('当前页码变化:', val)
+      this.page = val
+      this.getSpuList()
+    },
+
+    /**
+     * 查询 spu 数据列表
+     */
+    getSpuList() {
+      const { page, limit } = this
+      const { category3: category3Id } = this.categoryForm
+      try {
+        this.$API.spu.reqSpuList(page, limit, category3Id).then(result => {
+          console.log('reqSpuList:', result)
+          const { records, total } = result.data
+          this.spuList = records
+          this.total = total
+        })
+      } catch (err) {
+        console.log('reqSpuList err:', err)
+      }
     }
   }
 }
