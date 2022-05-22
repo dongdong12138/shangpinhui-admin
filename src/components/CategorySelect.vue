@@ -1,107 +1,34 @@
 <template>
   <div>
-
-    <el-card class="card">
-      <el-form :inline="true" :model="categoryForm" class="demo-form-inline">
-        <el-form-item label="一级分类">
-          <el-select v-model="categoryForm.category1" placeholder="请选择">
-            <el-option v-for="category1 in category1List" :key="category1.id" :label="category1.name" :value="category1.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="二级分类">
-          <el-select v-model="categoryForm.category2" placeholder="请选择">
-            <el-option v-for="category2 in category2List" :key="category2.id" :label="category2.name" :value="category2.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="三级分类">
-          <el-select v-model="categoryForm.category3" placeholder="请选择">
-            <el-option v-for="category3 in category3List" :key="category3.id" :label="category3.name" :value="category3.id" />
-          </el-select>
-        </el-form-item>
-      </el-form>
-    </el-card>
-
-    <el-card>
-
-      <div v-show="isTable">
-        <el-button :disabled="!categoryForm.category3" type="primary" icon="el-icon-plus" class="btn-add" @click="isTable = false">添加属性</el-button>
-        <el-table :data="attrInfoList" border style="width: 100%">
-          <el-table-column type="index" label="序号" width="80" align="center" />
-          <el-table-column prop="attrName" label="属性名称" width="150" />
-          <el-table-column label="属性值列表">
-            <template slot-scope="{ row }">
-              <el-tag v-for="attrValue in row.attrValueList" :key="attrValue.id" type="success" style="margin: 0 10px">{{ attrValue.valueName }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" width="150">
-            <template slot-scope="{ row }">
-              <el-button size="mini" type="warning" icon="el-icon-edit" @click="editAttr(row)" />
-              <el-button size="mini" type="danger" icon="el-icon-delete" />
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-
-      <div v-show="!isTable">
-        <el-form :model="attrInfo" :inline="true" class="demo-form-inline">
-          <el-form-item label="属性名">
-            <el-input v-model="attrInfo.attrName" placeholder="请输入属性名" />
-          </el-form-item>
-        </el-form>
-        <el-row>
-          <el-button :disabled="!attrInfo.attrName" type="primary" icon="el-icon-plus" @click="addAttrValue">添加属性值</el-button>
-          <el-button @click="cancelAddAttr">取消</el-button>
-        </el-row>
-        <el-table :data="attrInfo.attrValueList" border style="width: 100%; margin: 20px 0">
-          <el-table-column type="index" label="序号" width="80" align="center" />
-          <el-table-column prop="attrName" label="属性值名称">
-            <template v-slot="{ row, $index }">
-              <el-input v-show="row.flag" :ref="$index" v-model="row.valueName" size="mini" placeholder="请输入属性值名称" @blur="toggleLookAdnEdit(row)" @keyup.native.enter="toggleLookAdnEdit(row)" />
-              <span v-show="!row.flag" style="display: block" @click="tapSpan(row, $index)">{{ row.valueName }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <el-button v-show="isTable" size="mini" type="warning" icon="el-icon-edit" @click="isTable = false" />
-            <template v-slot="{ row, $index }">
-              <el-popconfirm :key="$index" :title="`确定删除${row.valueName}吗？`" @onConfirm="deleteAttrValue($index)">
-                <el-button slot="reference" size="mini" type="danger" icon="el-icon-delete">删除</el-button>
-              </el-popconfirm>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-row>
-          <el-button type="primary" @click="saveAddAttr">保存</el-button>
-          <el-button @click="cancelAddAttr">取消</el-button>
-        </el-row>
-      </div>
-
-    </el-card>
-
+    <el-form :inline="true" :model="categoryForm" class="demo-form-inline">
+      <el-form-item label="一级分类">
+        <el-select v-model="categoryForm.category1" placeholder="请选择">
+          <el-option v-for="category1 in category1List" :key="category1.id" :label="category1.name" :value="category1.id" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="二级分类">
+        <el-select v-model="categoryForm.category2" placeholder="请选择">
+          <el-option v-for="category2 in category2List" :key="category2.id" :label="category2.name" :value="category2.id" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="三级分类">
+        <el-select v-model="categoryForm.category3" placeholder="请选择">
+          <el-option v-for="category3 in category3List" :key="category3.id" :label="category3.name" :value="category3.id" />
+        </el-select>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
-import { cloneDeep } from 'lodash'
-
 export default {
   name: 'CategorySelect',
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['attrInfoList'],
   data() {
     return {
-      isTable: true,
       category1List: [],
       category2List: [],
       category3List: [],
-      categoryForm: { category1: '', category2: '', category3: '' },
-      attrInfo: {
-        'attrName': '',
-        'attrValueList': [
-          // { 'attrId': 0, 'valueName': '' }
-        ],
-        'categoryId': 0,
-        'categoryLevel': 3
-      }
+      categoryForm: { category1: '', category2: '', category3: '' }
     }
   },
   watch: {
@@ -117,82 +44,13 @@ export default {
       newValue && this.getCategory3(newValue)
     },
     'categoryForm.category3'(newValue) {
-      newValue && this.$emit('getCategoryId', this.categoryForm)
+      newValue && this.$emit('getCategoryForm', this.categoryForm)
     }
   },
   mounted() {
     this.getCategory1()
   },
   methods: {
-    deleteAttrValue(index) {
-      this.attrInfo.attrValueList.splice(index, 1)
-    },
-
-    toggleLookAdnEdit(row) {
-      if (!row.valueName.trim()) {
-        this.$message.warning('属性值不可以为空')
-        return
-      }
-      const isRepeat = this.attrInfo.attrValueList.some(item => {
-        if (row !== item) return item.valueName === row.valueName
-      })
-      if (isRepeat) {
-        row.valueName = ''
-        this.$message.warning('该属性值已存在')
-        return
-      }
-      row.flag = false
-    },
-    tapSpan(row, index) {
-      row.flag = true
-      this.$nextTick(() => {
-        this.$refs[index].focus()
-      })
-    },
-
-    saveAddAttr() {
-      this.attrInfo.categoryId = this.categoryForm.category3
-      this.attrInfo.id = this.attrInfo.id ? this.attrInfo.id : 78452
-      this.attrInfo.attrValueList = this.attrInfo.attrValueList.filter(item => {
-        if (item.valueName) {
-          delete item.flag
-          return true
-        }
-      })
-      try {
-        this.$API.attr.reqSaveAttrInfo(this.attrInfo).then(result => {
-          // console.log('reqSaveAttrInfo:', result)
-          if (result.code === 200) {
-            this.$message.success('保存成功')
-            this.$emit('getCategoryId', this.categoryForm)
-            this.cancelAddAttr()
-          }
-        })
-      } catch (err) {
-        console.log('reqSaveAttrInfo err:', err)
-      }
-    },
-    cancelAddAttr() {
-      this.isTable = true
-      const originAttrInfo = { 'attrName': '', 'attrValueList': [], 'categoryId': 0, 'categoryLevel': 0 }
-      Object.assign(this.attrInfo, originAttrInfo)
-    },
-
-    addAttrValue() {
-      this.attrInfo.attrValueList.push({ 'attrId': this.attrInfo.id, 'valueName': '', flag: true })
-      this.$nextTick(() => {
-        this.$refs[this.attrInfo.attrValueList.length - 1].focus()
-      })
-    },
-
-    editAttr(row) {
-      this.attrInfo = cloneDeep(row)
-      this.attrInfo.attrValueList.forEach(item => {
-        this.$set(item, 'flag', false)
-      })
-      this.isTable = false
-    },
-
     getCategory1() {
       try {
         this.$API.attr.reqCategory1().then(result => {
@@ -234,7 +92,5 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  margin: 20px 0;
-}
+
 </style>

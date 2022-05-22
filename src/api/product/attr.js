@@ -45,3 +45,12 @@ export function reqAttrInfoList(category1Id, category2Id, category3Id) {
 export function reqSaveAttrInfo(attrInfo) {
   return request({ url: `/dev-api2/admin/product/saveAttrInfo`, method: 'post', data: attrInfo })
 }
+
+/**
+ * 删除属性信息
+ * @param attrId 属性 id
+ * @returns {*}
+ */
+export function reqDeleteAttrInfo(attrId) {
+  return request({ url: `/dev-api2/admin/product/deleteAttr/${attrId}`, method: 'delete' })
+}
