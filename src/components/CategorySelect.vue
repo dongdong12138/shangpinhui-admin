@@ -55,9 +55,9 @@
         <el-table :data="attrInfo.attrValueList" border style="width: 100%; margin: 20px 0">
           <el-table-column type="index" label="序号" width="80" align="center" />
           <el-table-column prop="attrName" label="属性值名称">
-            <template slot-scope="{ row }">
-              <el-input v-show="row.flag" v-model="row.valueName" size="mini" placeholder="请输入属性值名称" @blur="toggleLookAdnEdit(row)" @keyup.native.enter="toggleLookAdnEdit(row)" />
-              <span v-show="!row.flag" style="display: block" @click="row.flag = true">{{ row.valueName }}</span>
+            <template slot-scope="{ row, $index }">
+              <el-input v-show="row.flag" :ref="$index" v-model="row.valueName" size="mini" placeholder="请输入属性值名称" @blur="toggleLookAdnEdit(row)" @keyup.native.enter="toggleLookAdnEdit(row)" />
+              <span v-show="!row.flag" style="display: block" @click="tapSpan(row, $index)">{{ row.valueName }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -121,7 +121,6 @@ export default {
   },
   methods: {
     toggleLookAdnEdit(row) {
-      console.log(row)
       if (!row.valueName.trim()) {
         this.$message.warning('属性值不可以为空')
         return
@@ -136,6 +135,12 @@ export default {
       }
       row.flag = false
     },
+    tapSpan(row, index) {
+      row.flag = true
+      this.$nextTick(() => {
+        this.$refs[index].focus()
+      })
+    },
 
     saveAddAttr() {
       const { category3 } = this.categoryForm
@@ -149,6 +154,9 @@ export default {
 
     addAttrValue() {
       this.attrInfo.attrValueList.push({ 'attrId': this.attrInfo.id, 'valueName': '', flag: true })
+      this.$nextTick(() => {
+        this.$refs[this.attrInfo.attrValueList.length - 1].focus()
+      })
     },
 
     editAttr(row) {
