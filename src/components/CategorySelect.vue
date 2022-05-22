@@ -34,8 +34,10 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
-            <el-button size="mini" type="warning" icon="el-icon-edit" @click="isTable = false" />
-            <el-button size="mini" type="danger" icon="el-icon-delete" />
+            <template slot-scope="{ row }">
+              <el-button size="mini" type="warning" icon="el-icon-edit" @click="editAttr(row)" />
+              <el-button size="mini" type="danger" icon="el-icon-delete" />
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -74,6 +76,8 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash'
+
 export default {
   name: 'CategorySelect',
   props: ['attrInfoList'],
@@ -126,6 +130,11 @@ export default {
 
     addAttrValue() {
       this.attrInfo.attrValueList.push({ 'attrId': undefined, 'valueName': '' })
+    },
+
+    editAttr(row) {
+      this.attrInfo = cloneDeep(row)
+      this.isTable = false
     },
 
     getCategory1() {
