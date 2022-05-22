@@ -227,7 +227,5 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  margin: 20px 0;
-}
+.card { margin-bottom: 20px; }
 </style>
