@@ -61,8 +61,12 @@
             </template>
           </el-table-column>
           <el-table-column label="操作">
-            <el-button size="mini" type="warning" icon="el-icon-edit" @click="isTable = false" />
-            <el-button size="mini" type="danger" icon="el-icon-delete" />
+            <el-button v-show="isTable" size="mini" type="warning" icon="el-icon-edit" @click="isTable = false" />
+            <template v-slot="{ row, $index }">
+              <el-popconfirm :ref="$index" :title="`确定删除${row.valueName}吗？`" @onConfirm="deleteAttrValue($index)">
+                <el-button slot="reference" size="mini" type="danger" icon="el-icon-delete">删除</el-button>
+              </el-popconfirm>
+            </template>
           </el-table-column>
         </el-table>
         <el-row>
@@ -120,6 +124,10 @@ export default {
     this.getCategory1()
   },
   methods: {
+    deleteAttrValue(index) {
+      this.attrInfo.attrValueList.splice(index, 1)
+    },
+
     toggleLookAdnEdit(row) {
       if (!row.valueName.trim()) {
         this.$message.warning('属性值不可以为空')
