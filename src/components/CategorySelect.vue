@@ -48,7 +48,7 @@
         </el-form>
         <el-row>
           <el-button :disabled="!attrInfo.attrName" type="primary" icon="el-icon-plus" @click="addAttrValue">添加属性值</el-button>
-          <el-button @click="isTable = true">取消</el-button>
+          <el-button @click="cancelAddAttr">取消</el-button>
         </el-row>
         <el-table :data="attrInfo.attrValueList" border style="width: 100%; margin: 20px 0">
           <el-table-column type="index" label="序号" width="80" align="center" />
@@ -63,8 +63,8 @@
           </el-table-column>
         </el-table>
         <el-row>
-          <el-button type="primary">保存</el-button>
-          <el-button @click="isTable = true">取消</el-button>
+          <el-button type="primary" @click="saveAddAttr">保存</el-button>
+          <el-button @click="cancelAddAttr">取消</el-button>
         </el-row>
       </div>
 
@@ -79,7 +79,7 @@ export default {
   props: ['attrInfoList'],
   data() {
     return {
-      isTable: false,
+      isTable: true,
       category1List: [],
       category2List: [],
       category3List: [],
@@ -114,6 +114,16 @@ export default {
     this.getCategory1()
   },
   methods: {
+    saveAddAttr() {
+      const { category3 } = this.categoryForm
+      console.log('category3:', category3)
+    },
+    cancelAddAttr() {
+      this.isTable = true
+      const originAttrInfo = { 'attrName': '', 'attrValueList': [], 'categoryId': 0, 'categoryLevel': 0 }
+      Object.assign(this.attrInfo, originAttrInfo)
+    },
+
     addAttrValue() {
       this.attrInfo.attrValueList.push({ 'attrId': undefined, 'valueName': '' })
     },
