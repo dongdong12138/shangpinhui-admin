@@ -153,6 +153,9 @@ export default {
 
     editAttr(row) {
       this.attrInfo = cloneDeep(row)
+      this.attrInfo.attrValueList.forEach(item => {
+        this.$set(item, 'flag', false)
+      })
       this.isTable = false
     },
 
