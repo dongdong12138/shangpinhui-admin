@@ -7,8 +7,8 @@
 
     <el-card>
 
-      <!--spu 列表-->
-      <div>
+      <!-- spu列表 -->
+      <div v-show="scene === 0">
         <el-button type="primary" icon="el-icon-plus">添加SPU</el-button>
         <el-table :data="spuList" border style="width: 100%">
           <el-table-column type="index" label="序号" width="80" align="center" />
@@ -35,17 +35,28 @@
         />
       </div>
 
+      <!-- 添加spu | 修改spu -->
+      <SpuForm v-show="scene === 1" />
+
+      <!-- 添加sku -->
+      <SkuForm v-show="scene === 2" />
+
     </el-card>
 
   </div>
 </template>
 
 <script>
+import SpuForm from '@/components/Spu/SpuForm'
+import SkuForm from '@/components/Spu/SkuForm'
+
 export default {
   name: 'Spu',
+  components: { SkuForm, SpuForm },
   data() {
     return {
       categoryForm: { category1: '', category2: '', category3: '' },
+      scene: 0, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
       page: 1,
       limit: 5,
       total: 0,
