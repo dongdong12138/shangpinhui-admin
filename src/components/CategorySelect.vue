@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :inline="true" :model="categoryForm" class="demo-form-inline">
+    <el-form :inline="true" :model="categoryForm" :disabled="disable" class="demo-form-inline">
       <el-form-item label="一级分类">
         <el-select v-model="categoryForm.category1" placeholder="请选择">
           <el-option v-for="category1 in category1List" :key="category1.id" :label="category1.name" :value="category1.id" />
@@ -23,6 +23,8 @@
 <script>
 export default {
   name: 'CategorySelect',
+  // eslint-disable-next-line vue/require-prop-types
+  props: ['disable'],
   data() {
     return {
       category1List: [],

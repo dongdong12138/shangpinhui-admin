@@ -2,7 +2,7 @@
   <div>
 
     <el-card class="card">
-      <CategorySelect @getCategoryForm="getCategoryForm" />
+      <CategorySelect :disable="!isTable" @getCategoryForm="getCategoryForm" />
     </el-card>
 
     <el-card>
@@ -58,7 +58,7 @@
           </el-table-column>
         </el-table>
         <el-row>
-          <el-button type="primary" @click="saveAddAttr">保存</el-button>
+          <el-button type="primary" :disabled="!attrInfo.attrValueList.length" @click="saveAddAttr">保存</el-button>
           <el-button @click="cancelAddAttr">取消</el-button>
         </el-row>
       </div>
