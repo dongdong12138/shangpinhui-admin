@@ -55,7 +55,7 @@
         <el-table :data="attrInfo.attrValueList" border style="width: 100%; margin: 20px 0">
           <el-table-column type="index" label="序号" width="80" align="center" />
           <el-table-column prop="attrName" label="属性值名称">
-            <template slot-scope="{ row, $index }">
+            <template v-slot="{ row, $index }">
               <el-input v-show="row.flag" :ref="$index" v-model="row.valueName" size="mini" placeholder="请输入属性值名称" @blur="toggleLookAdnEdit(row)" @keyup.native.enter="toggleLookAdnEdit(row)" />
               <span v-show="!row.flag" style="display: block" @click="tapSpan(row, $index)">{{ row.valueName }}</span>
             </template>
@@ -63,7 +63,7 @@
           <el-table-column label="操作">
             <el-button v-show="isTable" size="mini" type="warning" icon="el-icon-edit" @click="isTable = false" />
             <template v-slot="{ row, $index }">
-              <el-popconfirm :ref="$index" :title="`确定删除${row.valueName}吗？`" @onConfirm="deleteAttrValue($index)">
+              <el-popconfirm :key="$index" :title="`确定删除${row.valueName}吗？`" @onConfirm="deleteAttrValue($index)">
                 <el-button slot="reference" size="mini" type="danger" icon="el-icon-delete">删除</el-button>
               </el-popconfirm>
             </template>
@@ -100,7 +100,7 @@ export default {
           // { 'attrId': 0, 'valueName': '' }
         ],
         'categoryId': 0,
-        'categoryLevel': 0
+        'categoryLevel': 3
       }
     }
   },
@@ -151,8 +151,26 @@ export default {
     },
 
     saveAddAttr() {
-      const { category3 } = this.categoryForm
-      console.log('category3:', category3)
+      this.attrInfo.categoryId = this.categoryForm.category3
+      this.attrInfo.id = this.attrInfo.id ? this.attrInfo.id : 78452
+      this.attrInfo.attrValueList = this.attrInfo.attrValueList.filter(item => {
+        if (item.valueName) {
+          delete item.flag
+          return true
+        }
+      })
+      try {
+        this.$API.attr.reqSaveAttrInfo(this.attrInfo).then(result => {
+          // console.log('reqSaveAttrInfo:', result)
+          if (result.code === 200) {
+            this.$message.success('保存成功')
+            this.$emit('getCategoryId', this.categoryForm)
+            this.cancelAddAttr()
+          }
+        })
+      } catch (err) {
+        console.log('reqSaveAttrInfo err:', err)
+      }
     },
     cancelAddAttr() {
       this.isTable = true
