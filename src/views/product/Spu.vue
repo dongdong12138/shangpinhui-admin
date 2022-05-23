@@ -101,7 +101,7 @@ export default {
     deleteSpu(row) {
       try {
         this.$API.spu.reqDeleteSpu(row.id).then(result => {
-          console.log('reqDeleteSpu:', result)
+          // console.log('reqDeleteSpu:', result)
           this.getSpuList()
           this.$message.success('删除成功')
         })
@@ -115,7 +115,6 @@ export default {
      * @param val 显示条数
      */
     handleSizeChange(val) {
-      console.log('每页显示条数变化:', val)
       this.limit = val
       this.page = 1
       this.getSpuList()
@@ -126,7 +125,6 @@ export default {
      * @param val 当前页码
      */
     handleCurrentChange(val) {
-      console.log('当前页码变化:', val)
       this.page = val
       this.getSpuList()
     },
@@ -139,7 +137,7 @@ export default {
       const { category3: category3Id } = this.categoryForm
       try {
         this.$API.spu.reqSpuList(page, limit, category3Id).then(result => {
-          console.log('reqSpuList:', result)
+          // console.log('reqSpuList:', result)
           const { records, total } = result.data
           if (!records.length && page > 1) {
             this.page -= 1

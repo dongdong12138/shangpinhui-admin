@@ -122,7 +122,6 @@ export default {
       this.spuForm.imageList = fileList
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList)
       this.spuForm.imageList = fileList
     },
     handlePictureCardPreview(file) {
@@ -176,10 +175,9 @@ export default {
         item.imgName = item.name
         item.imgUrl = item.url
       })
-      console.log('spuInfo:', spuInfo)
       try {
         this.$API.spu.reqSaveOrUpdateSpu(spuInfo).then(result => {
-          console.log('reqSaveOrUpdateSpu:', result)
+          // console.log('reqSaveOrUpdateSpu:', result)
           this.onCancel()
         })
       } catch (err) {
@@ -194,7 +192,7 @@ export default {
     getSpu(spuId) {
       try {
         this.$API.spu.reqSpu(spuId).then(result => {
-          console.log('reqSpu:', result)
+          // console.log('reqSpu:', result)
           const { spuName, description, spuSaleAttrList, tmId } = result.data
           Object.assign(this.spuForm, { spuName, description, spuSaleAttrList, trademarkId: tmId })
         })
@@ -208,7 +206,7 @@ export default {
     getTrademarkList() {
       try {
         this.$API.spu.reqTrademarkList().then(result => {
-          console.log('reqTrademarkList:', result)
+          // console.log('reqTrademarkList:', result)
           this.trademarkList = result.data
         })
       } catch (err) {
@@ -222,7 +220,7 @@ export default {
     getImageList(spuId) {
       try {
         this.$API.spu.reqImageList(spuId).then(result => {
-          console.log('reqImageList:', result)
+          // console.log('reqImageList:', result)
           result.data.forEach(item => {
             item.name = item.imgName
             item.url = item.imgUrl
@@ -240,7 +238,7 @@ export default {
     getAttrList() {
       try {
         this.$API.spu.reqAttrList().then(result => {
-          console.log('reqAttrList:', result)
+          // console.log('reqAttrList:', result)
           this.attrList = result.data
         })
       } catch (err) {
