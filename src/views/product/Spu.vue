@@ -2,7 +2,7 @@
   <div class="container">
 
     <el-card class="card">
-      <CategorySelect :disable="false" @getCategoryForm="getCategoryForm" />
+      <CategorySelect :disable="scene !== 0" @getCategoryForm="getCategoryForm" />
     </el-card>
 
     <el-card>

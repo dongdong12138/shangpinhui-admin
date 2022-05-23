@@ -47,14 +47,14 @@
           <el-table-column prop="saleAttrName" label="属性名" />
           <el-table-column label="属性值名称列表">
             <template v-slot="{ row, $index }">
-              <el-tag v-for="tag in row.spuSaleAttrValueList" :key="tag.id" closable :disable-transitions="false" @close="handleClose(row)">{{ tag.saleAttrValueName }}</el-tag>
+              <el-tag v-for="(tag, index) in row.spuSaleAttrValueList" :key="tag.id" closable :disable-transitions="false" @close="handleClose(row, index)">{{ tag.saleAttrValueName }}</el-tag>
               <el-input v-if="row.inputVisible" :ref="$index" v-model="row.inputValue" class="input-new-tag" size="small" @keyup.enter.native="handleInputConfirm(row)" @blur="handleInputConfirm(row)" />
               <el-button v-else class="button-new-tag" size="small" @click="addSaleAttrValue(row, $index)">添加</el-button>
             </template>
           </el-table-column>
           <el-table-column prop="address" label="操作">
-            <template v-slot="{ row }">
-              <el-button type="danger" icon="el-icon-delete" size="mini" />
+            <template v-slot="{ row, $index }">
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="spuForm.spuSaleAttrList.splice($index, 1)" />
             </template>
           </el-table-column>
         </el-table>
@@ -129,6 +129,9 @@ export default {
       this.spuForm.attrId = ''
     },
 
+    handleClose(row, index) {
+      row.spuSaleAttrValueList.splice(index, 1)
+    },
     handleInputConfirm(row) {
       const { baseSaleAttrId, inputValue } = row
       if (!inputValue.trim()) {
