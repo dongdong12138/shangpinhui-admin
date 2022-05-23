@@ -27,6 +27,7 @@
           :file-list="spuForm.imageList"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
+          :on-success="handleSuccess"
         >
           <i class="el-icon-plus" />
         </el-upload>
@@ -110,8 +111,12 @@ export default {
       }
     },
 
+    handleSuccess(response, file, fileList) {
+      this.spuForm.imageList = fileList
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList)
+      this.spuForm.imageList = fileList
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
