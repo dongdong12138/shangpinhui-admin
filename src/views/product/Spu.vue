@@ -9,15 +9,15 @@
 
       <!-- spu列表 -->
       <div v-show="scene === 0">
-        <el-button type="primary" icon="el-icon-plus">添加SPU</el-button>
+        <el-button :disabled="!categoryForm.category3" type="primary" icon="el-icon-plus" @click="addSpu">添加SPU</el-button>
         <el-table :data="spuList" border style="width: 100%">
           <el-table-column type="index" label="序号" width="80" align="center" />
           <el-table-column prop="spuName" label="spu名称" />
           <el-table-column prop="description" label="spu描述" />
           <el-table-column label="操作">
             <template v-slot="{ row, $index }">
-              <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" />
-              <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" />
+              <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" @click="addSpu" />
+              <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" @click="updateSpu(row)" />
               <HintButton title="查看当前spu全部sku列表" type="info" icon="el-icon-info" size="mini" />
               <HintButton title="删除spu" type="danger" icon="el-icon-delete" size="mini" />
             </template>
@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       categoryForm: { category1: '', category2: '', category3: '' },
-      scene: 0, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
+      scene: 1, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
       page: 1,
       limit: 5,
       total: 0,
@@ -67,6 +67,22 @@ export default {
     getCategoryForm(form) {
       this.categoryForm = form
       this.getSpuList()
+    },
+
+    /**
+     * 添加 spu
+     */
+    addSpu() {
+      this.scene = 1
+    },
+
+    /**
+     * 修改 spu
+     * @param row spu 信息
+     */
+    updateSpu(row) {
+      this.scene = 1
+      console.log('row:', row)
     },
 
     /**
