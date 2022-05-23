@@ -57,3 +57,12 @@ export function reqSaveOrUpdateSpu(spuInfo) {
     return request({ url: `/dev-api2/admin/product/saveSpuInfo`, method: 'post', data: spuInfo })
   }
 }
+
+/**
+ * 删除 spu
+ * @param spuId
+ * @returns {Promise}
+ */
+export function reqDeleteSpu(spuId) {
+  return request({ url: `/dev-api2/admin/product/deleteSpu/${spuId}`, method: 'delete' })
+}

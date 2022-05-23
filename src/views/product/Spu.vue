@@ -15,11 +15,13 @@
           <el-table-column prop="spuName" label="spu名称" />
           <el-table-column prop="description" label="spu描述" />
           <el-table-column label="操作">
-            <template v-slot="{ row, $index }">
+            <template v-slot="{ row }">
               <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" @click="addSpu" />
               <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" @click="updateSpu(row)" />
               <HintButton title="查看当前spu全部sku列表" type="info" icon="el-icon-info" size="mini" />
-              <HintButton title="删除spu" type="danger" icon="el-icon-delete" size="mini" />
+              <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon="el-icon-info" icon-color="red" :title="`确定删除${row.spuName}吗？`" @onConfirm="deleteSpu(row)">
+                <HintButton slot="reference" title="删除spu" type="danger" icon="el-icon-delete" size="mini" />
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -93,6 +95,22 @@ export default {
     },
 
     /**
+     * 删除 spu
+     * @param row spu 信息
+     */
+    deleteSpu(row) {
+      try {
+        this.$API.spu.reqDeleteSpu(row.id).then(result => {
+          console.log('reqDeleteSpu:', result)
+          this.getSpuList()
+          this.$message.success('删除成功')
+        })
+      } catch (err) {
+        console.log('reqDeleteSpu err:', err)
+      }
+    },
+
+    /**
      * 每页显示条数变化
      * @param val 显示条数
      */
@@ -123,6 +141,10 @@ export default {
         this.$API.spu.reqSpuList(page, limit, category3Id).then(result => {
           console.log('reqSpuList:', result)
           const { records, total } = result.data
+          if (!records.length && page > 1) {
+            this.page -= 1
+            this.getSpuList()
+          }
           this.spuList = records
           this.total = total
         })
