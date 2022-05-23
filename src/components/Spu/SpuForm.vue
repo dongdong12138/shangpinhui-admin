@@ -39,9 +39,9 @@
       <!--销售属性-->
       <el-form-item label="销售属性">
         <el-select v-model="spuForm.attrId" :placeholder="`还有${unSelectSaleAttr.length}未选择`">
-          <el-option v-for="attr in unSelectSaleAttr" :key="attr.id" :label="attr.name" :value="attr.id" />
+          <el-option v-for="attr in unSelectSaleAttr" :key="attr.id" :label="attr.name" :value="`${attr.id}:${attr.name}`" />
         </el-select>
-        <el-button :disabled="!spuForm.attrId" type="primary" icon="el-icon-plus">添加销售属性</el-button>
+        <el-button :disabled="!spuForm.attrId" type="primary" icon="el-icon-plus" @click="addSaleAttr">添加销售属性</el-button>
         <el-table :data="spuForm.spuSaleAttrList" border style="width: 100%">
           <el-table-column type="index" label="序号" width="80" align="center" />
           <el-table-column prop="saleAttrName" label="属性名" />
@@ -121,6 +121,11 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+
+    addSaleAttr() {
+      const [baseSaleAttrId, saleAttrName] = this.spuForm.attrId.split(':')
+      this.spuForm.spuSaleAttrList.push({ baseSaleAttrId, saleAttrName, spuSaleAttrValueList: [] })
     },
 
     handleInputConfirm() {
