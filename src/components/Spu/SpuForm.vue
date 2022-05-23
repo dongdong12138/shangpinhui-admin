@@ -73,8 +73,11 @@
 <script>
 export default {
   name: 'SpuForm',
+  // eslint-disable-next-line vue/require-prop-types
+  props: ['category3Id'],
   data() {
     return {
+      rowId: '',
       dialogVisible: false,
       dialogImageUrl: '',
       // inputVisible: false,
@@ -101,6 +104,7 @@ export default {
     initSpuForm(spu) {
       if (spu) {
         const { id } = spu
+        this.rowId = id
         this.getSpu(id)
         this.getTrademarkList()
         this.getImageList(id)
@@ -112,6 +116,9 @@ export default {
     },
 
     handleSuccess(response, file, fileList) {
+      fileList.forEach(item => {
+        item.url = item.response.data
+      })
       this.spuForm.imageList = fileList
     },
     handleRemove(file, fileList) {
@@ -158,9 +165,26 @@ export default {
 
     onCancel() {
       this.$emit('changeScene', 0)
+      Object.assign(this._data, this.$options.data())
     },
     onSubmit() {
-      console.log('submit!')
+      const { category3Id, rowId } = this
+      const { description, imageList, spuName, spuSaleAttrList, trademarkId } = this.spuForm
+      const id = rowId || undefined
+      const spuInfo = { id, category3Id, description, spuImageList: imageList, spuName, spuSaleAttrList, tmId: trademarkId }
+      imageList.forEach(item => {
+        item.imgName = item.name
+        item.imgUrl = item.url
+      })
+      console.log('spuInfo:', spuInfo)
+      try {
+        this.$API.spu.reqSaveOrUpdateSpu(spuInfo).then(result => {
+          console.log('reqSaveOrUpdateSpu:', result)
+          this.onCancel()
+        })
+      } catch (err) {
+        console.log('reqSaveOrUpdateSpu err:', err)
+      }
     },
 
     /**
@@ -171,8 +195,8 @@ export default {
       try {
         this.$API.spu.reqSpu(spuId).then(result => {
           console.log('reqSpu:', result)
-          const { spuName, description, spuSaleAttrList } = result.data
-          Object.assign(this.spuForm, { spuName, description, spuSaleAttrList })
+          const { spuName, description, spuSaleAttrList, tmId } = result.data
+          Object.assign(this.spuForm, { spuName, description, spuSaleAttrList, trademarkId: tmId })
         })
       } catch (err) {
         console.log('reqSpu err:', err)

@@ -44,3 +44,16 @@ export function reqImageList(spuId) {
 export function reqAttrList() {
   return request({ url: `/dev-api2/admin/product/baseSaleAttrList`, method: 'get' })
 }
+
+/**
+ * 保存或修改 spu
+ * @param spuInfo spu 信息
+ * @returns {Promise}
+ */
+export function reqSaveOrUpdateSpu(spuInfo) {
+  if (spuInfo.id) {
+    return request({ url: `/dev-api2/admin/product/updateSpuInfo`, method: 'post', data: spuInfo })
+  } else {
+    return request({ url: `/dev-api2/admin/product/saveSpuInfo`, method: 'post', data: spuInfo })
+  }
+}

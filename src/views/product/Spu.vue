@@ -36,7 +36,7 @@
       </div>
 
       <!-- 添加spu | 修改spu -->
-      <SpuForm v-show="scene === 1" ref="spuForm" @changeScene="changeScene" />
+      <SpuForm v-show="scene === 1" ref="spuForm" :category3-id="categoryForm.category3" @changeScene="changeScene" />
 
       <!-- 添加sku -->
       <SkuForm v-show="scene === 2" />
@@ -70,6 +70,9 @@ export default {
     },
     changeScene(value) {
       this.scene = value
+      if (value === 0) {
+        this.getSpuList()
+      }
     },
 
     /**
