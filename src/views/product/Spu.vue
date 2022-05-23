@@ -16,7 +16,7 @@
           <el-table-column prop="description" label="spu描述" />
           <el-table-column label="操作">
             <template v-slot="{ row }">
-              <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" @click="addSpu" />
+              <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" @click="addSku(row)" />
               <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" @click="updateSpu(row)" />
               <HintButton title="查看当前spu全部sku列表" type="info" icon="el-icon-info" size="mini" />
               <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon="el-icon-info" icon-color="red" :title="`确定删除${row.spuName}吗？`" @onConfirm="deleteSpu(row)">
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       categoryForm: { category1: '', category2: '', category3: '' },
-      scene: 0, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
+      scene: 2, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
       page: 1,
       limit: 5,
       total: 0,
@@ -80,9 +80,17 @@ export default {
     /**
      * 添加 spu
      */
-    addSpu() {
+    addSpu(row) {
       this.scene = 1
       this.$refs.spuForm.initSpuForm()
+    },
+
+    /**
+     * 添加 sku
+     */
+    addSku(row) {
+      console.log(row)
+      this.scene = 2
     },
 
     /**
