@@ -41,7 +41,7 @@
       <SpuForm v-show="scene === 1" ref="spuForm" :category3-id="categoryForm.category3" @changeScene="changeScene" />
 
       <!-- 添加sku -->
-      <SkuForm v-show="scene === 2" ref="skuForm" />
+      <SkuForm v-show="scene === 2" ref="skuForm" @changeScene="changeScene" />
 
     </el-card>
 

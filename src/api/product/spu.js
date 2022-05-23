@@ -66,3 +66,41 @@ export function reqSaveOrUpdateSpu(spuInfo) {
 export function reqDeleteSpu(spuId) {
   return request({ url: `/dev-api2/admin/product/deleteSpu/${spuId}`, method: 'delete' })
 }
+
+/**
+ * 查询图片列表
+ * @param spuId
+ * @returns {Promise}
+ */
+export function reqSpuImageList(spuId) {
+  return request({ url: `/dev-api2/admin/product/spuImageList/${spuId}`, method: 'get' })
+}
+
+/**
+ * 查询销售属性列表
+ * @param spuId
+ * @returns {Promise}
+ */
+export function reqSaleAttrList(spuId) {
+  return request({ url: `/dev-api2/admin/product/spuSaleAttrList/${spuId}`, method: 'get' })
+}
+
+/**
+ * 查询属性列表
+ * @param category1Id
+ * @param category2Id
+ * @param category3Id
+ * @returns {Promise}
+ */
+export function reqAttrInfoList(category1Id, category2Id, category3Id) {
+  return request({ url: `/dev-api2/admin/product/attrInfoList/${category1Id}/${category2Id}/${category3Id}`, method: 'get' })
+}
+
+/**
+ * 保存 sku
+ * @param skuInfo
+ * @returns {Promise}
+ */
+export function reqSaveSkuInfo(skuInfo) {
+  return request({ url: `/dev-api2/admin/product/saveSkuInfo`, method: 'post', data: skuInfo })
+}
