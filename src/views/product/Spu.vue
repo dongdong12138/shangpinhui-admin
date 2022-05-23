@@ -36,7 +36,7 @@
       </div>
 
       <!-- 添加spu | 修改spu -->
-      <SpuForm v-show="scene === 1" />
+      <SpuForm v-show="scene === 1" ref="spuForm" @changeScene="changeScene" />
 
       <!-- 添加sku -->
       <SkuForm v-show="scene === 2" />
@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       categoryForm: { category1: '', category2: '', category3: '' },
-      scene: 1, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
+      scene: 0, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
       page: 1,
       limit: 5,
       total: 0,
@@ -68,12 +68,16 @@ export default {
       this.categoryForm = form
       this.getSpuList()
     },
+    changeScene(value) {
+      this.scene = value
+    },
 
     /**
      * 添加 spu
      */
     addSpu() {
       this.scene = 1
+      this.$refs.spuForm.initSpuForm()
     },
 
     /**
@@ -82,7 +86,7 @@ export default {
      */
     updateSpu(row) {
       this.scene = 1
-      console.log('row:', row)
+      this.$refs.spuForm.initSpuForm(row)
     },
 
     /**
