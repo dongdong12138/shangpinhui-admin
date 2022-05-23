@@ -48,8 +48,8 @@
           <el-table-column label="属性值名称列表">
             <template v-slot="{ row, $index }">
               <el-tag v-for="tag in row.spuSaleAttrValueList" :key="tag.id" closable :disable-transitions="false" @close="handleClose(row)">{{ tag.saleAttrValueName }}</el-tag>
-              <el-input v-if="row.inputVisible" :ref="$index" v-model="row.inputValue" class="input-new-tag" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm" />
-              <el-button v-else class="button-new-tag" size="small" @click="showInput($index)">添加</el-button>
+              <el-input v-if="row.inputVisible" :ref="$index" v-model="row.inputValue" class="input-new-tag" size="small" @keyup.enter.native="handleInputConfirm(row)" @blur="handleInputConfirm(row)" />
+              <el-button v-else class="button-new-tag" size="small" @click="addSaleAttrValue(row, $index)">添加</el-button>
             </template>
           </el-table-column>
           <el-table-column prop="address" label="操作">
@@ -77,7 +77,7 @@ export default {
     return {
       dialogVisible: false,
       dialogImageUrl: '',
-      inputVisible: false,
+      // inputVisible: false,
       trademarkList: [],
       attrList: [],
       spuForm: {
@@ -126,13 +126,28 @@ export default {
     addSaleAttr() {
       const [baseSaleAttrId, saleAttrName] = this.spuForm.attrId.split(':')
       this.spuForm.spuSaleAttrList.push({ baseSaleAttrId, saleAttrName, spuSaleAttrValueList: [] })
+      this.spuForm.attrId = ''
     },
 
-    handleInputConfirm() {
-      this.inputVisible = false
+    handleInputConfirm(row) {
+      const { baseSaleAttrId, inputValue } = row
+      if (!inputValue.trim()) {
+        this.$message.warning('属性值不能为空')
+        return
+      }
+      if (row.spuSaleAttrValueList.length) {
+        const isRepeat = row.spuSaleAttrValueList.some(item => item.saleAttrValueName === inputValue)
+        if (isRepeat) {
+          this.$message.warning('属性值不能重复')
+          return
+        }
+      }
+      row.spuSaleAttrValueList.push({ baseSaleAttrId, saleAttrValueName: inputValue })
+      row.inputVisible = false
     },
-    showInput(index) {
-      this.inputVisible = true
+    addSaleAttrValue(row, index) {
+      this.$set(row, 'inputVisible', true)
+      this.$set(row, 'inputValue', '')
       this.$nextTick(() => {
         this.$refs[index].focus()
       })
