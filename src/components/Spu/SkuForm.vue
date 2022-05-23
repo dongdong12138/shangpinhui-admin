@@ -76,7 +76,53 @@
 
 <script>
 export default {
-  name: 'SkuForm'
+  name: 'SkuForm',
+  data() {
+    return {
+      imageList: [],
+      saleAttrList: [],
+      attrInfoList: []
+    }
+  },
+  methods: {
+    initSkuForm(row, categoryForm) {
+      const { id } = row
+      const { category1, category2, category3 } = categoryForm
+      this.getImageList(id)
+      this.getSaleAttrList(id)
+      this.getAttrInfoList(category1, category2, category3)
+    },
+    getImageList(spuId) {
+      try {
+        this.$API.sku.reqImageList(spuId).then(result => {
+          console.log('reqImageList:', result)
+          this.imageList = result.data
+        })
+      } catch (err) {
+        console.log('reqImageList err:', err)
+      }
+    },
+    getSaleAttrList(spuId) {
+      try {
+        this.$API.sku.reqSaleAttrList(spuId).then(result => {
+          console.log('reqSaleAttrList:', result)
+          this.saleAttrList = result.data
+        })
+      } catch (err) {
+        console.log('reqSaleAttrList err:', err)
+      }
+    },
+    getAttrInfoList(category1Id, category2Id, category3Id) {
+      try {
+        this.$API.sku.reqAttrInfoList(category1Id, category2Id, category3Id).then(result => {
+          console.log('reqAttrInfoList:', result)
+          this.attrInfoList = result.data
+        })
+      } catch (err) {
+        console.log('reqAttrInfoList err:', err)
+      }
+    }
+  }
 }
 </script>
 

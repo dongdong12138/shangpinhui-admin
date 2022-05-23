@@ -41,7 +41,7 @@
       <SpuForm v-show="scene === 1" ref="spuForm" :category3-id="categoryForm.category3" @changeScene="changeScene" />
 
       <!-- 添加sku -->
-      <SkuForm v-show="scene === 2" />
+      <SkuForm v-show="scene === 2" ref="skuForm" />
 
     </el-card>
 
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       categoryForm: { category1: '', category2: '', category3: '' },
-      scene: 2, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
+      scene: 0, // 0:spu列表, 1:添加spu|修改spu, 2:添加sku
       page: 1,
       limit: 5,
       total: 0,
@@ -80,7 +80,7 @@ export default {
     /**
      * 添加 spu
      */
-    addSpu(row) {
+    addSpu() {
       this.scene = 1
       this.$refs.spuForm.initSpuForm()
     },
@@ -89,8 +89,8 @@ export default {
      * 添加 sku
      */
     addSku(row) {
-      console.log(row)
       this.scene = 2
+      this.$refs.skuForm.initSkuForm(row, this.categoryForm)
     },
 
     /**
