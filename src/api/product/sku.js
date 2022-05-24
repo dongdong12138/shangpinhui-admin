@@ -27,3 +27,12 @@ export function reqOnSale(skuId) {
 export function reqCancelSale(skuId) {
   return request({ url: `/dev-api2/admin/product/cancelSale/${skuId}`, method: 'get' })
 }
+
+/**
+ * 获取 sku 详情
+ * @param skuId
+ * @returns {Promise}
+ */
+export function reqSkuDetail(skuId) {
+  return request({ url: `/dev-api2/admin/product/getSkuById/${skuId}`, method: 'get' })
+}
