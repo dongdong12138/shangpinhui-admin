@@ -45,7 +45,7 @@
 
       <!--查看sku列表-->
       <el-dialog :title="`${skuListName}的sku列表`" :visible.sync="dialogTableVisible" @closed="dialogClosed">
-        <el-table :data="skuList" style="width: 100%">
+        <el-table v-loading="loadingSkuList" :data="skuList" style="width: 100%">
           <el-table-column property="skuName" label="名称" width="150" />
           <el-table-column property="price" label="价格" width="200" />
           <el-table-column property="weight" label="重量" />
@@ -77,6 +77,7 @@ export default {
       limit: 5,
       total: 0,
       spuList: [],
+      loadingSkuList: false,
       dialogTableVisible: false,
       skuListName: '',
       skuList: []
@@ -128,11 +129,14 @@ export default {
       this.skuListName = row.spuName
       this.dialogTableVisible = true
       try {
+        this.loadingSkuList = true
         this.$API.spu.reqSkuList(row.id).then(result => {
           console.log('reqSkuList:', result)
           this.skuList = result.data
+          this.loadingSkuList = false
         })
       } catch (err) {
+        this.loadingSkuList = false
         console.log('reqSkuList err:', err)
       }
     },
