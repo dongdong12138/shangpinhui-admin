@@ -14,11 +14,13 @@
         <el-table-column prop="weight" label="重量(KG)" width="80" align="center" />
         <el-table-column prop="price" label="价格(元)" width="80" align="center" />
         <el-table-column label="操作" align="center">
-          <el-button type="success" icon="el-icon-top" size="mini" />
-          <el-button type="info" icon="el-icon-bottom" size="mini" />
-          <el-button type="primary" icon="el-icon-edit" size="mini" />
-          <el-button type="info" icon="el-icon-info" size="mini" />
-          <el-button type="danger" icon="el-icon-delete" size="mini" />
+          <template v-slot="{ row }">
+            <el-button v-if="row.isSale === 0" type="success" icon="el-icon-top" size="mini" @click="onSale(row)" />
+            <el-button v-else type="info" icon="el-icon-bottom" size="mini" @click="cancelSale(row)" />
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="$message.info('正在开发中')" />
+            <el-button type="info" icon="el-icon-info" size="mini" />
+            <el-button type="danger" icon="el-icon-delete" size="mini" />
+          </template>
         </el-table-column>
       </el-table>
 
@@ -61,10 +63,28 @@ export default {
         this.total = total
       })
     },
+
+    onSale(row) {
+      this.$API.sku.reqOnSale(row.id).then(result => {
+        console.log('reqOnSale:', result)
+        row.isSale = 1
+        this.$message.success('上架成功')
+      })
+    },
+
+    cancelSale(row) {
+      this.$API.sku.reqCancelSale(row.id).then(result => {
+        console.log('reqCancelSale:', result)
+        row.isSale = 0
+        this.$message.success('下架成功')
+      })
+    },
+
     handleSizeChange(val) {
       this.limit = val
       this.getSkuList()
     },
+
     handleCurrentChange(val) {
       this.page = val
       this.getSkuList()
