@@ -33,8 +33,8 @@ header {
   padding: 10px 0;
 }
 .charts {
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
 }
 footer {
   border-top: 1px solid #eee;

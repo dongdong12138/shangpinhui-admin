@@ -20,7 +20,7 @@
         <el-card>
           <Card title="访问量" count="5482">
             <template slot="charts">
-              <div>222</div>
+              <LineChart />
             </template>
             <template slot="footer">
               <span>日访问量 1234</span>
@@ -62,10 +62,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import Card from '@/components/Dashboard/Card'
+import LineChart from '@/components/Dashboard/LineChart'
 
 export default {
   name: 'Dashboard',
-  components: { Card },
+  components: { LineChart, Card },
   computed: {
     ...mapGetters(['name'])
   }
