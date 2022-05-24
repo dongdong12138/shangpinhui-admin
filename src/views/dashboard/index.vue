@@ -56,6 +56,7 @@
         </el-card>
       </el-col>
     </el-row>
+    <Sale />
   </div>
 </template>
 
@@ -65,10 +66,11 @@ import Card from '@/components/Dashboard/Card'
 import LineChart from '@/components/Dashboard/LineChart'
 import BarChart from '@/components/Dashboard/BarChart'
 import ProgressCharts from '@/components/Dashboard/ProgressCharts'
+import Sale from '@/components/Dashboard/Sale'
 
 export default {
   name: 'Dashboard',
-  components: { ProgressCharts, BarChart, LineChart, Card },
+  components: { Sale, ProgressCharts, BarChart, LineChart, Card },
   computed: {
     ...mapGetters(['name'])
   }
