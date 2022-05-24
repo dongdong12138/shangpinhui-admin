@@ -44,7 +44,7 @@
         <el-card>
           <Card title="运营活动效果" count="59%">
             <template slot="charts">
-              <div>444</div>
+              <ProgressCharts />
             </template>
             <template slot="footer">
               <div style="font-size: 15px">
@@ -64,10 +64,11 @@ import { mapGetters } from 'vuex'
 import Card from '@/components/Dashboard/Card'
 import LineChart from '@/components/Dashboard/LineChart'
 import BarChart from '@/components/Dashboard/BarChart'
+import ProgressCharts from '@/components/Dashboard/ProgressCharts'
 
 export default {
   name: 'Dashboard',
-  components: { BarChart, LineChart, Card },
+  components: { ProgressCharts, BarChart, LineChart, Card },
   computed: {
     ...mapGetters(['name'])
   }
