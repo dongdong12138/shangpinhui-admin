@@ -32,7 +32,7 @@
         <el-card>
           <Card title="支付笔数" count="562">
             <template slot="charts">
-              <div>333</div>
+              <BarChart />
             </template>
             <template slot="footer">
               <span>转化率 65%</span>
@@ -63,10 +63,11 @@
 import { mapGetters } from 'vuex'
 import Card from '@/components/Dashboard/Card'
 import LineChart from '@/components/Dashboard/LineChart'
+import BarChart from '@/components/Dashboard/BarChart'
 
 export default {
   name: 'Dashboard',
-  components: { LineChart, Card },
+  components: { BarChart, LineChart, Card },
   computed: {
     ...mapGetters(['name'])
   }

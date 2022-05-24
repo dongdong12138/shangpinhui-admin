@@ -6,7 +6,7 @@
 import * as echarts from 'echarts'
 
 export default {
-  name: 'LineChart',
+  name: 'BarChart',
   mounted() {
     const myChart = echarts.init(this.$refs.charts)
     myChart.setOption({
@@ -20,28 +20,13 @@ export default {
       grid: {
         left: 0, top: 0, right: 0, bottom: 10
       },
+      tooltip: {
+        show: true
+      },
       series: [
         {
-          type: 'line',
-          data: [5, 20, 5, 20, 5, 20, 5, 20, 5],
-          smooth: true,
-          showSymbol: false,
-          lineStyle: {
-            width: 0
-          },
-          areaStyle: {
-            opacity: 0.8,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'purple'
-              },
-              {
-                offset: 1,
-                color: 'white'
-              }
-            ])
-          }
+          data: [120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70],
+          type: 'bar'
         }
       ]
     })
