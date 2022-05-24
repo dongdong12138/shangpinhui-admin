@@ -18,7 +18,7 @@
             <template v-slot="{ row }">
               <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" @click="addSku(row)" />
               <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" @click="updateSpu(row)" />
-              <HintButton title="查看当前spu全部sku列表" type="info" icon="el-icon-info" size="mini" />
+              <HintButton title="查看当前spu全部sku列表" type="info" icon="el-icon-info" size="mini" @click="lookSkuList(row)" />
               <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon="el-icon-info" icon-color="red" :title="`确定删除${row.spuName}吗？`" @onConfirm="deleteSpu(row)">
                 <HintButton slot="reference" title="删除spu" type="danger" icon="el-icon-delete" size="mini" />
               </el-popconfirm>
@@ -43,6 +43,20 @@
       <!-- 添加sku -->
       <SkuForm v-show="scene === 2" ref="skuForm" @changeScene="changeScene" />
 
+      <!--查看sku列表-->
+      <el-dialog :title="`${skuListName}的sku列表`" :visible.sync="dialogTableVisible" @closed="dialogClosed">
+        <el-table :data="skuList" style="width: 100%">
+          <el-table-column property="skuName" label="名称" width="150" />
+          <el-table-column property="price" label="价格" width="200" />
+          <el-table-column property="weight" label="重量" />
+          <el-table-column label="默认图片">
+            <template v-slot="{ row }">
+              <img :src="row.skuDefaultImg" alt="image" style="width: 100px">
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
+
     </el-card>
 
   </div>
@@ -62,7 +76,10 @@ export default {
       page: 1,
       limit: 5,
       total: 0,
-      spuList: []
+      spuList: [],
+      dialogTableVisible: false,
+      skuListName: '',
+      skuList: []
     }
   },
   methods: {
@@ -100,6 +117,29 @@ export default {
     updateSpu(row) {
       this.scene = 1
       this.$refs.spuForm.initSpuForm(row)
+    },
+
+    /**
+     * 查看 sku 列表
+     * @param row spu 信息
+     */
+    lookSkuList(row) {
+      console.log(row)
+      this.skuListName = row.spuName
+      this.dialogTableVisible = true
+      try {
+        this.$API.spu.reqSkuList(row.id).then(result => {
+          console.log('reqSkuList:', result)
+          this.skuList = result.data
+        })
+      } catch (err) {
+        console.log('reqSkuList err:', err)
+      }
+    },
+
+    dialogClosed() {
+      this.skuListName = ''
+      this.skuList = []
     },
 
     /**

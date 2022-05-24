@@ -104,3 +104,12 @@ export function reqAttrInfoList(category1Id, category2Id, category3Id) {
 export function reqSaveSkuInfo(skuInfo) {
   return request({ url: `/dev-api2/admin/product/saveSkuInfo`, method: 'post', data: skuInfo })
 }
+
+/**
+ * 获取 sku 列表
+ * @param spuId
+ * @returns {Promise}
+ */
+export function reqSkuList(spuId) {
+  return request({ url: `/dev-api2/admin/product/findBySpuId/${spuId}`, method: 'get' })
+}
