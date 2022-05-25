@@ -53,24 +53,12 @@ export default {
               saveAsImage: { show: true }
             }
           },
-          itemStyle: {
-            borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2
-          },
           label: {
             show: true,
             position: 'outside'
           },
           labelLine: {
             show: true
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: '40',
-              fontWeight: 'bold'
-            }
           },
           data: [
             { value: 1048, name: 'Search Engine' },
@@ -107,7 +95,6 @@ export default {
 }
 
 .chart {
-  border: 1px solid red;
   width: 100%;
   height: 295px;
   margin-top: 20px;

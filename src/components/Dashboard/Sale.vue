@@ -51,7 +51,9 @@ export default {
     return {
       activeName: 'saleCount',
       dateArr: [],
-      myChart: null
+      myChart: null,
+      saleData: [10, 52, 200, 334, 450, 330, 220, 10, 52, 200, 334, 390],
+      visitData: [34, 89, 108, 28, 10, 67, 59, 301, 62, 87, 31, 106]
     }
   },
   computed: {
@@ -64,7 +66,15 @@ export default {
       this.myChart.setOption({
         title: {
           text: `${newValue}趋势`
-        }
+        },
+        series: [
+          {
+            name: 'Direct',
+            type: 'bar',
+            barWidth: '40%',
+            data: newValue === '访问量' ? this.visitData : this.saleData
+          }
+        ]
       })
     }
   },
@@ -105,14 +115,14 @@ export default {
           name: 'Direct',
           type: 'bar',
           barWidth: '40%',
-          data: [10, 52, 200, 334, 450, 330, 220, 10, 52, 200, 334, 390]
+          data: this.saleData
         }
       ]
     })
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event)
+      // console.log(tab, event)
     },
 
     setDay() {
