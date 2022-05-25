@@ -35,7 +35,7 @@
         @current-change="handleCurrentChange"
       />
 
-      <el-drawer title="我是标题" :visible.sync="drawer" direction="rtl" :show-close="false" size="50%" :with-header="false" :before-close="handleClose">
+      <el-drawer title="我是标题" :visible.sync="drawer" direction="rtl" :show-close="false" size="50%" :with-header="false">
         <el-row>
           <el-col :span="5" class="col-left">名称</el-col>
           <el-col :span="16">{{ skuDetail.skuName }}</el-col>

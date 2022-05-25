@@ -30,6 +30,8 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+
+// 常量路由
 export const constantRoutes = [
   {
     path: '/login',
@@ -51,7 +53,11 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  },
+  }
+]
+
+// 异步路由
+export const asyncRoutes = [
   // 权限管理路由
   {
     name: 'Acl',
@@ -101,37 +107,41 @@ export const constantRoutes = [
   },
   // 商品管理路由
   {
-    name: 'product',
+    name: 'Product',
     path: '/product',
     component: Layout,
     meta: { title: '商品管理', icon: 'el-icon-goods' },
     children: [
       {
-        name: 'tradeMark',
+        name: 'TradeMark',
         path: 'tradeMark',
         component: () => import('@/views/product/TradeMark'),
         meta: { title: '品牌管理' }
       },
       {
-        name: 'attr',
+        name: 'Attr',
         path: 'attr',
         component: () => import('@/views/product/Attr'),
         meta: { title: '平台属性管理' }
       },
       {
-        name: 'spu',
+        name: 'Spu',
         path: 'spu',
         component: () => import('@/views/product/Spu'),
         meta: { title: 'Spu管理' }
       },
       {
-        name: 'sku',
+        name: 'Sku',
         path: 'sku',
         component: () => import('@/views/product/Sku'),
         meta: { title: 'Sku管理' }
       }
     ]
-  },
+  }
+]
+
+// 任意路由
+export const anyRoutes = [
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
