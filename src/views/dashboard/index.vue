@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card>
@@ -56,7 +57,22 @@
         </el-card>
       </el-col>
     </el-row>
+
     <Sale />
+
+    <el-row :gutter="20" style="margin-top: 20px">
+      <el-col :span="12">
+        <el-card>
+          <Search />
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card>
+          分类
+        </el-card>
+      </el-col>
+    </el-row>
+
   </div>
 </template>
 
@@ -67,10 +83,11 @@ import LineChart from '@/components/Dashboard/LineChart'
 import BarChart from '@/components/Dashboard/BarChart'
 import ProgressCharts from '@/components/Dashboard/ProgressCharts'
 import Sale from '@/components/Dashboard/Sale'
+import Search from '@/components/Dashboard/Search'
 
 export default {
   name: 'Dashboard',
-  components: { Sale, ProgressCharts, BarChart, LineChart, Card },
+  components: { Search, Sale, ProgressCharts, BarChart, LineChart, Card },
   computed: {
     ...mapGetters(['name'])
   }
