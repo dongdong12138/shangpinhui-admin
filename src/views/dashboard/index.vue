@@ -68,7 +68,7 @@
       </el-col>
       <el-col :span="12">
         <el-card>
-          分类
+          <Category />
         </el-card>
       </el-col>
     </el-row>
@@ -84,10 +84,11 @@ import BarChart from '@/components/Dashboard/BarChart'
 import ProgressCharts from '@/components/Dashboard/ProgressCharts'
 import Sale from '@/components/Dashboard/Sale'
 import Search from '@/components/Dashboard/Search'
+import Category from '@/components/Dashboard/Category'
 
 export default {
   name: 'Dashboard',
-  components: { Search, Sale, ProgressCharts, BarChart, LineChart, Card },
+  components: { Category, Search, Sale, ProgressCharts, BarChart, LineChart, Card },
   computed: {
     ...mapGetters(['name'])
   }
