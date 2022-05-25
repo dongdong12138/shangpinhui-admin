@@ -52,6 +52,54 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'dashboard' }
     }]
   },
+  // 权限管理路由
+  {
+    name: 'Acl',
+    path: '/acl',
+    component: Layout,
+    redirect: '/acl/user/list',
+    meta: {
+      title: '权限管理',
+      icon: 'el-icon-lock'
+    },
+    children: [
+      {
+        name: 'User',
+        path: 'user/list',
+        component: () => import('@/views/acl/UserList'),
+        meta: {
+          title: '用户管理'
+        }
+      },
+      {
+        name: 'Role',
+        path: 'role/list',
+        component: () => import('@/views/acl/RoleList'),
+        meta: {
+          title: '角色管理'
+        }
+      },
+      {
+        name: 'RoleAuth',
+        path: 'role/auth/:id',
+        component: () => import('@/views/acl/RoleAuth'),
+        meta: {
+          activeMenu: '/acl/RoleList',
+          title: '角色授权'
+        },
+        hidden: true
+      },
+      {
+        name: 'Permission',
+        path: 'permission/list',
+        component: () => import('@/views/acl/PermissionList'),
+        meta: {
+          title: '菜单管理'
+        }
+      }
+    ]
+  },
+  // 商品管理路由
   {
     name: 'product',
     path: '/product',
