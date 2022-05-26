@@ -92,7 +92,7 @@ export default {
     getSkuList() {
       const { page, limit } = this
       this.$API.sku.reqSkuList(page, limit).then(result => {
-        console.log('reqSkuList:', result)
+        // console.log('reqSkuList:', result)
         const { records, total } = result.data
         this.skuList = records
         this.total = total
@@ -101,7 +101,7 @@ export default {
 
     onSale(row) {
       this.$API.sku.reqOnSale(row.id).then(result => {
-        console.log('reqOnSale:', result)
+        // console.log('reqOnSale:', result)
         row.isSale = 1
         this.$message.success('上架成功')
       })
@@ -109,7 +109,7 @@ export default {
 
     cancelSale(row) {
       this.$API.sku.reqCancelSale(row.id).then(result => {
-        console.log('reqCancelSale:', result)
+        // console.log('reqCancelSale:', result)
         row.isSale = 0
         this.$message.success('下架成功')
       })
@@ -118,7 +118,7 @@ export default {
     lookSkuDetail(row) {
       this.drawer = true
       this.$API.sku.reqSkuDetail(row.id).then(result => {
-        console.log('reqSkuDetail:', result)
+        // console.log('reqSkuDetail:', result)
         this.skuDetail = result.data
       })
     },

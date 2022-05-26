@@ -330,7 +330,7 @@ export default {
     async getRoles() {
       try {
         const result = await this.$API.user.getRoles(this.user.id)
-        console.log('getRoles:', result)
+        // console.log('getRoles:', result)
         const { allRolesList, assignRoles } = result.data
         this.allRoles = allRolesList
         this.userRoleIds = assignRoles.map(item => item.id)

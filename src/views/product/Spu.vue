@@ -125,13 +125,12 @@ export default {
      * @param row spu 信息
      */
     lookSkuList(row) {
-      console.log(row)
       this.skuListName = row.spuName
       this.dialogTableVisible = true
       try {
         this.loadingSkuList = true
         this.$API.spu.reqSkuList(row.id).then(result => {
-          console.log('reqSkuList:', result)
+          // console.log('reqSkuList:', result)
           this.skuList = result.data
           this.loadingSkuList = false
         })

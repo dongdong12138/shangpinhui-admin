@@ -1,12 +1,9 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter, asyncRoutes, constantRoutes, anyRoutes } from '@/router'
-import router from '@/router'
+import { getInfo, login, logout } from '@/api/user'
+import { getToken, removeToken, setToken } from '@/utils/auth'
+import router, { anyRoutes, asyncRoutes, constantRoutes, resetRouter } from '@/router'
 
 const computedAsyncRoutes = (asyncRoutes, routes) => {
-  console.log('asyncRoutes:', asyncRoutes)
-  console.log('routes:', routes)
-  const arr = asyncRoutes.filter(item => {
+  return asyncRoutes.filter(item => {
     if (routes.includes(item.name)) {
       // 递归，因为可能有多级路由
       // 之所以要递归多级路由，是因为可能有的子级路由是没有权限查看的
@@ -16,8 +13,6 @@ const computedAsyncRoutes = (asyncRoutes, routes) => {
       return true
     }
   })
-  console.log('arr:', arr)
-  return arr
 }
 
 const getDefaultState = () => {
@@ -81,7 +76,6 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
 
-        console.log('getInfo:', data)
         const { name, avatar } = data
         commit('SET_USERINFO', data)
         commit('SET_NAME', name)

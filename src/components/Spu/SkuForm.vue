@@ -98,7 +98,6 @@ export default {
   },
   methods: {
     initSkuForm(row, categoryForm) {
-      console.log(row)
       const { id } = row
       const { category1, category2, category3 } = categoryForm
       this.category3Id = category3
@@ -143,7 +142,7 @@ export default {
       }
       try {
         this.$API.spu.reqSaveSkuInfo(skuInfo).then(result => {
-          console.log('reqSaveSkuInfo:', result)
+          // console.log('reqSaveSkuInfo:', result)
           this.onCancel()
           this.$message.success('保存成功')
         })
@@ -155,7 +154,7 @@ export default {
     getImageList(spuId) {
       try {
         this.$API.spu.reqSpuImageList(spuId).then(result => {
-          console.log('reqImageList:', result)
+          // console.log('reqImageList:', result)
           result.data.forEach(item => {
             item.isDefault = 0
           })
@@ -168,7 +167,7 @@ export default {
     getSaleAttrList(spuId) {
       try {
         this.$API.spu.reqSaleAttrList(spuId).then(result => {
-          console.log('reqSaleAttrList:', result)
+          // console.log('reqSaleAttrList:', result)
           this.saleAttrList = result.data
         })
       } catch (err) {
@@ -178,7 +177,7 @@ export default {
     getAttrInfoList(category1Id, category2Id, category3Id) {
       try {
         this.$API.spu.reqAttrInfoList(category1Id, category2Id, category3Id).then(result => {
-          console.log('reqAttrInfoList:', result)
+          // console.log('reqAttrInfoList:', result)
           this.attrInfoList = result.data
         })
       } catch (err) {

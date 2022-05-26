@@ -103,7 +103,7 @@ export default {
         if (!valid) return
         try {
           this.$API.tradeMark.reqAddorUpdateTradeMark(this.tradeMarkForm).then(res => {
-            console.log('reqAddorUpdateTradeMark:', res)
+            // console.log('reqAddorUpdateTradeMark:', res)
             if (res.code === 200) {
               this.getTradeMarkList()
               const message = this.tradeMarkForm.id ? '修改品牌成功' : '添加品牌成功'
